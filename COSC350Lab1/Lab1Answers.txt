@@ -1,0 +1,64 @@
+Task 1 Path: /usr/include
+
+Task 2 Path: ../bin/ls
+
+Task 3
+
+	2a. Permissions Owner: Read/Write Group: Read Only Others: Read Only
+	2b. File Owner: slefever1
+	2c. Group Associated: users
+	2d. I am in the users group
+	2e. Groups: users and students
+
+	3. chmod 125 foo
+
+	4. Command Used: rm foo 
+	   Output: rm: remove write-protected regular empty file 'foo'? y
+
+Task 4
+	ls Man Page Loaded
+
+	2. a: List All l: Long List Format R: Recursive List
+	3. for ls -a all files include .bash_history were listed
+	4. time - run programs and summarize system resource usage
+	5. man - an interface to the system reference manuals
+
+Task 5
+	2. /mnt/linuxlab/home/slefever1
+	3. cd.. command invoked
+	4. /mnt/linuxlab/home
+	5. drwxr-xr-x
+
+Task 6
+	1./bin/bash: ELF 64-bit LSB shared object
+	2 foo: empty
+	3. /mnt/linuxlab/home/slefever1/.bash_history: Java source, ASCII text
+	4. /usr/local: directory
+
+Task 7
+	4. head -n 5 ~/.bash_history
+	5. tail ~/.bash_history
+
+Task 8
+	1. cp ~/.bash_history ~/dotbashhistory
+	2. Read and Write permissions are needed to copy a file
+	3. System did not throw any errors when copying file to existing destination
+	4. dotbashhistory has only user read and write no other permissions
+	   .bash_history has same permissions but file was created at 11:16 while copy was created 11:51
+	5. cp -p ~/.bash_history ~/dotbashhistory
+
+Task 9
+	1. mv ~/dotbashhistory ~/dotbashhistory.old
+
+Task 10
+	1. rm ~/dotbashhistory.old
+
+Task 11
+	1. mkdir ~/Foo
+	2. drwxr-xr-x
+	3. mkdir Foo/Bar
+
+Task 12
+	1. rmdir: failed to remove '/mnt/linuxlab/home/slefever1/Foo': Directory not empty
+	2. rmdir Bar; rmdir Foo
+	3. rm -f -r ~/Foo

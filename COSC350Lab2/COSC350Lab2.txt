@@ -1,0 +1,40 @@
+Spencer Lefever 
+COSC350 Lab 2
+
+1. ENV Variables
+	PS1: [\u@\h \W]\$ PS1 Variable is set in ~/.bash_profile file 
+	HOME: /mnt/linuxlab/home/slefever1 
+	HOSTNAME: hpcl12-6 
+	LD_LIBRARY_PATH: /usr/local/cuda/lib64
+	LESS: NO VALUE 
+	MAIL: NO VALUE
+	MANPATH: /mnt/linuxlab/home/slefever1/.nvm/versions/node/v17.5.0/share/man::/opt/puppetlabs/puppet/share/man
+	MORE: NO VALUE
+	PAGER: less
+	PATH: /usr/local/cuda/bin:/mnt/linuxlab/home/slefever1/.nvm/versions/node/v17.5.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:~/bin:/usr/local/cuda/bin:/opt/hadoop-3.3.3/bin:/opt/hadoop-3.3.3/sbin:/opt/puppetlabs/bin:/mnt/linuxlab/home/slefever1/bin:/mnt/linuxlab/home/slefever1/bin/scripts
+	PWD: /mnt/linuxlab/home/slefever1/COSC350
+	SHELL: /bin/bash
+	TERM: screen
+	USER: slefever1
+
+2. Prompts
+	1. Save current prompt in temporary variable called PS1TMP
+	2. Change PS1 variable PS1="[COSC350 \W]$ " 
+	3. Change prompt back PS1=$PS1TMP
+
+4. Redirecting Output
+	1. stderr redirecting using ls -l fakefile 2>bar
+	2. redirect error to /dev/null using ls -l fakefile 2>/dev/null
+	3. redirecting into foo using echo 3 5 2 1 >foo
+	4. foo cat-ed into bar using cat foo >bar
+	5. sort input redirected using sort<foo
+	6. sort redirected to bar sort<foo>bar
+
+5. Piping
+	1. Wrote a quick C program to write ints to file 
+	2. wc numbs output: 100 100 292 which is the newline, word and byte counts for the file
+	3. sed -n -e 25,38p numbs>somenumbs
+		sed takes lines 25-38 from numbs and puts them into somenumbs
+	4. wc somenumbs output: 14 14 42 which shows theres 14 newlines 14 words and 42 bytes in the file
+
+

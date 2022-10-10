@@ -1,0 +1,37 @@
+/**
+ * Spencer Lefever
+ * COSC350 lab3 task2
+ * 
+ * Copy content on any readable file
+ * using open reading byte by byte
+ */
+
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+
+#define PERMISSION (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP)
+
+int main() 
+{
+    //Buffer nread and file descriptors for i/o
+    char buffer[1];
+    int nread, fdOut, fdIn;
+
+    fdOut = creat("clone1", PERMISSION);
+
+    while((nread=read(STDIN_FILENO,buffer,1)) > 0) {
+        if(write(fdOut, buffer, nread) != nread) {
+            printf("Write Error");
+            exit(0);
+        }
+    }
+
+    if(nread<0) {
+        printf("Write Error");
+        exit(0);
+    }
+
+}
