@@ -11,28 +11,52 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 
+#define PERMISSIONS (S_IRUSR | S_IWUSR)
+
+static int alarm_fired = 0;
+
+void ding() {
+    alarm_fired = 1;
+}
 
 int main(int argc, char** argv) {
+    int fdIn, fdNum, fdChar;
+
+    char* buf = malloc(1);
     pid_t pid;
-    int n;
 
-    int fd = open(argv[1], S_IRWXU);
+    umask(0);
 
+    fdIn = open(argv[1], O_RDONLY);
+    fdNum = open("parent.txt", O_RDWR | O_CREAT, PERMISSIONS);
+    fdChar = open("child.txt", O_RDWR | O_CREAT, PERMISSIONS);
 
-    printf("fork program starting\n");
-	pid = fork();
+    pid = fork();
 
-	if(pid==-1){
-        printf("Fork failed\n");
-        exit(-1);
+    int tmp;
+
+    if(pid==0) {
+        while(read(fdIn, buf, 1) > 0) {
+            if(*buf >= 48 && *buf <= 57){
+                write(fdNum, buf, 1);
+            }
+        }
+
+        lseek(fdIn, 0, SEEK_SET);
+
+        kill(getppid(), SIGALRM);
+    } else {
+        signal(SIGALRM, ding);
+        pause();
+
+        while(read(fdIn, buf, 1) > 0) {
+            if((*buf >= 65 && *buf <= 90) || (*buf >= 97 && *buf <= 122)) {
+                write(fdChar, buf, 1);
+            }
+        }
+
     }
-
-
-    char* buf;
-    while(read(fd, buf, 1) > 0) {
-        
-    }
-	
 
 }
