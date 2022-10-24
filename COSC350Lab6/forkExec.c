@@ -1,9 +1,8 @@
 /**
  * Spencer Lefever
- * COSC350 Lab6 Task 3
+ * COSC350 Lab6 Task 4
  *
- * Create a new process using fork and wait
- * The parent process waits for the child process to finish
+ * Child process image is replaced by the image of a program named child
  *
  * Takes 4 command line arguments
  *
@@ -31,7 +30,6 @@ int main(int argc, char** argv) {
 		exit(1);
 	}
 
-	printf("fork program starting\n");
 	pid = fork();
 
 	switch(pid)
@@ -40,23 +38,25 @@ int main(int argc, char** argv) {
 			perror("fork failed");
 			exit(1);
 		case 0:
-			message = "This is the child";
-			n = stringToInt(argv[1]);
-			sleep(stringToInt(argv[3]));
+			if(execl("child", "This is the child", argv[1], argv[3], NULL) < 0) {
+				printf("execl ERROR\n");
+				exit(1);
+			}
 		break;
 
 		default:
 			wait();
 			message = "This is the parent";
 			n = stringToInt(argv[2]);
-			sleep(stringToInt(argv[4]));
+			for(; n > 0; n--) {
+				printf("Parent process pid: %d message: %s\n", getpid(), message);
+				sleep(stringToInt(argv[4]));
+			}	
+			
 			break;
 	}
 
-	for(; n > 0; n--) {
-		puts(message);
-		sleep(1);
-	}
+	
 
 	exit(0);
 }

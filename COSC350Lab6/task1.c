@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
 		printf("mygetenv() returns: %s\n",mygetenv("TERM"));
 
 	if(argc==2)
-		printf("mygetenv() returns: %s\n", mygetenv(argv[1]);
+		printf("mygetenv() returns: %s\n", mygetenv(argv[1]));
 
 }
 
