@@ -10,6 +10,13 @@
 #include <stdlib.h>
 #define NUM_THREADS 2
 
+
+int input=0;
+int sumNum = 0;
+int factorialNum = 1;
+void *sum(void *);
+void *factorial();
+
 int main(int argc, char** argv) {
     if(argc != 2 ){
     printf("ARGUMENT ERROR \n");

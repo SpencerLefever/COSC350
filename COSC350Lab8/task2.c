@@ -12,6 +12,11 @@
 
 int scoreArray[20];
 
+void sort();
+void *minMax(void *num);
+void *scores(void *num);
+void *avg(void *num);
+
 
 int main(){
     pthread_t t[NUM_THREADS];
