@@ -34,9 +34,6 @@ int main() {
     pthread_join(threads[1], &tmp2);
     pthread_join(threads[2], &tmp3);
 
-    // pthread_detach(threads[1]);
-    // pthread_detach(threads[2]);
-
     rc = pthread_create(&threads[3], NULL, clearBuf, NULL);
     pthread_join(threads[3], &tmp4);   
 
