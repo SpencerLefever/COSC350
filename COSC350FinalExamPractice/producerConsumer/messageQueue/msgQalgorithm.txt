@@ -1,0 +1,48 @@
+Algorithm for the message queue problems
+
+Struct for message queue
+    struct my_msgbuf{
+        long mtype;
+        char mtext[200];
+    };
+
+msgQsnd.c
+    1. Create a key
+        key_t key = ftok("msgQsnd.c", 'X')
+        Second arg is the id
+
+    2. Create message queue
+        int msgqid = msgget(key, 0644 | IPC_CREAT)
+        Second arg is the message flags
+
+    3. Read from input until Ctrl-D
+        while(gets(buf.mtext), feof(stdin)) {
+            //Write to msgQ
+        }
+
+    4. Write buf to message queue from inside while loop
+        msgsnd(msqid, (struct msgbuf *)&buf, sizof(buf), 0)
+
+    5. Remove the message queue
+        msgctl(msgqid, IPC_RMID, NULL)
+
+msgQrcv.c
+    1. Create a key
+        key_t key = ftok("msgQsnd.c", 'X')
+        id arg must be same as msgQsnd id
+
+    2. Open the message queue
+        int msgqid = msgget(key, 0644)
+
+    3. Get from messge queue
+        msgrcv(msgqid, (struct msgbuf *)&buf, sizeof(buf), 0, 0)
+
+    4. Get text from message queue
+        Text from message stored in buf.mtext
+        a. Check if two integer;
+            if(sscanf(buf.mtext, "%d%d", &n, &n2) == 2){
+                printf("Sum of two integer (%d, %d): %d\n", n, n2, n+n2);
+            }
+            else{
+                printf("Message did not contain two integers\n");
+            }

@@ -1,0 +1,70 @@
+Algorithm for shared memory producer consumer problem
+
+struct integers{
+	int numbers[5];
+	int counter;
+};
+
+struct Memory{
+	int status;
+	int gostop;
+	struct integers data;
+};
+
+
+consumer.c
+
+    1. Create a key value
+        key_t key = ftok(".", 'x');
+
+    2. Create shared memory
+        int shmid = shmget(key, sizeof(struct Memory), IPC_CREAT | 0666)
+
+    3. Attach to shared memory
+        struct Memory *shm = (struct Memory *) shmat(shmid, NULL, 0)
+
+    4. Read from shared memory until told to stop
+        while (shm->gostop == GO)
+        {
+            int i,j;
+            int size = sizeof(shm->data.numbers)/sizeof(shm->data.numbers[0]);
+            for(i = 0; i < size; i++){
+                while(shm->data.counter == 0){
+                    if(shm->gostop == STOP)
+                        break;
+                }
+                shm->data.counter--;
+                shm->data.numbers[i] = 0;
+                for(j = 0; j < size; j++){
+                    printf("%d ", shm->data.numbers[j]);
+                }
+                printf("\n");
+                shm->status = TAKEN;
+                sleep(1);
+            }
+        }
+
+    5. detach from shared memory
+        shmdt((void *) shm);
+
+producer.c 
+
+    1. Create a key value
+        key_t key = ftok(".", 'x');
+
+    2. Open shared memory
+        int shmid = shmget(key, sizeof(struct Memory), 0)
+        no flags are needed since consumer.c already created the shared memory
+
+    3. Attach to shared memory
+        struct Memory *shm = (struct Memory *) shmat(shmid, NULL, 0)
+
+    4. Fill shared memory with data and increase data counter
+        shm->data.numbers = 0;
+        shm->data.counter++;
+
+    5. Check if shared memory is full and if it is wait until data is grabbed
+        if(shm->data.counter == size){
+				shm->status = FILLED;
+				while(shm->status != TAKEN);
+			} 
