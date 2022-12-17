@@ -1,0 +1,17 @@
+Basic algorithm for any thread question
+
+1. Create pthread_t array for however many threads are needed
+    pthread_t threads[x]
+
+2. Call pthread_create
+    pthread_create(&threads[i], NULL, function, (void *) val)
+    function adn val are the function the thread executes and 
+    the data being passed into the thread's function
+    Note: Thread function takes void* ptr as an argument
+
+3a. Call pthread_exit inside of the thread function to define and exit return val
+    pthread_exit((void *) retVal);
+
+3b. Call pthread_join to wait for a thread to finish its job
+    pthread_join(threads[i], &tmp);
+    Note: tmp is a void* that requires casting to be used

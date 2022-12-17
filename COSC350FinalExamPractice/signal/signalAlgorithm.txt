@@ -1,0 +1,20 @@
+Algorithm for basic signal questions
+
+1. Create a signal handler to handle signals
+    signal handler for most test questions with just have to handle SIGUSR1 and SIGUSR2
+    void sig_handler(int sigNo) {
+        if(sigNo == SIGUSR1) {
+            //Do something
+        }
+        else if(sigNo == SIGUSR2) {
+            //Do something
+        }
+    }
+    Note: This example would most likely be used when parent and child both have to send signals
+
+2. Call signal system call to "link" signal and sig_handler
+    signal(SIGUSR1, sig_handler)
+    signal(SIGUSR2, sig_handler)
+
+3. For most signal questions, a parent or child will send a signal to the other using kill
+    kill(getppid(), SIGUSR1);
