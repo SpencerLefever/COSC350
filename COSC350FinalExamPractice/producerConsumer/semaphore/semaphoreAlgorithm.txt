@@ -1,1 +1,24 @@
 Algorithm for semaphore producer consumer problems
+
+Semaphores are used alongside shared memory to maintain mutual exclusion
+
+1. Define up and down functions 
+    void down(int semid, int index){
+        struct sembuf buf = {index, -1, 0};
+        semop(semid, &buf, 1);
+    }
+    void up(int semid, int index){
+        struct sembuf buf = {index, 1, 0};
+        semop(semid, &buf, 1);
+    }
+    
+2. Get semaphore using semget system call
+    int semid = semget(key, 3, 0)
+
+3. Down empty and Down mutex before sending into shared memory
+    down(semid, EMPTY);
+    down (semid, MUTEX);
+
+4. Do stuff them return mutex to use and raise full 
+    up(semid, MUTEX);
+	up(semid, FULL);
