@@ -48,8 +48,7 @@ int main(void)
 		else{
 			printf("Message did not contain two integers\n");
 		}
-		
-		
+				
 	}
 	return 0;
 }
