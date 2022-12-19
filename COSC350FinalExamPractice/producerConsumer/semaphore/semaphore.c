@@ -13,6 +13,7 @@
 #define FULL 1
 #define EMPTY 2
 
+int buffer[5];
 
 union semun{
 	int val;
@@ -37,8 +38,9 @@ void up(int semid, int index){
 
 int main() {
     key_t key;
-    int shmid, semid;
+    int shmid, semid, item, check, index;
     struct Memory* shm;
+    
 
     int pid = fork();
 
@@ -46,15 +48,23 @@ int main() {
         key = ftok(".", 'x');
         shmid = shmget(key, sizeof(struct Memory *), IPC_CREAT | 0666);
         shm = shmat(shmid, NULL, 0);
-        semid = semget(key, 3, 0);
+        semid = semget(key, 3, IPC_CREAT | 0666);
 
+        puts("Starting producer");
         int size = sizeof(shm->numbers) / sizeof(shm->numbers[0]);
         while(1) {
-            
+
+            while(semctl(semid,MUTEX,GETVAL) == 0)
+                sleep(1);
+
+            item = rand()%50;
             down(semid, EMPTY);
             down(semid, MUTEX);
+            index = semctl(semid, FULL, GETVAL);
+            buffer[index] = item;            
             for(int i=0; i<size; i++) {
-                shm->numbers[i] = rand() % 50;
+                // shm->numbers[i] = rand() % 50;
+                printf("buffer[%d] = %d\n", i,buffer[i]);
             }
             up(semid, FULL);
             up(semid, MUTEX);
@@ -72,18 +82,27 @@ int main() {
         shm = shmat(shmid, NULL, 0);
         semid = semget(key, 3, 0);
 
+        puts("Starting consumer");
         int size = sizeof(shm->numbers) / sizeof(shm->numbers[0]);
         while(1) {
+
+            while(semctl(semid,MUTEX,GETVAL) == 0)
+                sleep(1);
+
             down(semid, FULL);
             down(semid, MUTEX);
 
             semctl(semid, FULL, GETVAL);
             int sum = 0;
             for(int i = 0; i < size; i++){
-			    printf("%d ", shm->numbers[i]);
-                sum += shm->numbers[i];
+			    // printf("%d ", shm->numbers[i]);
+                // sum += shm->numbers[i];
 		    }
             printf("\nSum of numbers: %d\n", sum);
+            index = semctl(semid, FULL, GETVAL);
+            item = buffer[index];
+            printf("Consumer used %d\n",item);
+            buffer[index-1]=0;
 
             up(semid, MUTEX);
             up(semid, EMPTY);

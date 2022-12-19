@@ -82,7 +82,7 @@ int main() {
         key = ftok(".", 'z');
         shmid = shmget(key, sizeof(struct Memory), 0666);
         shm = shmat(shmid, NULL, 0);
-        semid = semget(key, N, 0);
+        semid = semget(key, N, 0666);
         size = sizeof(shm->data) / sizeof(shm->data[0]);
         int semBuf[5];
         while(1) {
